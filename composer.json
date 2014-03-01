@@ -1,0 +1,15 @@
+{
+    "name": "InstagramTakipci",
+    "description": "Nothing to see...",
+    "license": "MIT",
+    "require": {
+        "symfony/console": "~2.3",
+        "herrera-io/phar-update": "~1.0",
+        "fabpot/goutte": "1.0.*@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "InstagramTakipci": "src/"
+        }
+    }
+}
