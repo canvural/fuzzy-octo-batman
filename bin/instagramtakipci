@@ -11,6 +11,6 @@ set_time_limit(0);
 use InstagramTakipci\Command;
 use Symfony\Component\Console\Application;
 
-$application = new Application('InstagramTakipci', '0.1-dev');
+$application = new Application('InstagramTakipci', '@package_version@');
 $application->add(new Command\MainCommand());
 $application->run();
