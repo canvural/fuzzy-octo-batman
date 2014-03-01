@@ -13,4 +13,5 @@ use Symfony\Component\Console\Application;
 
 $application = new Application('InstagramTakipci', '@package_version@');
 $application->add(new Command\MainCommand());
+$application->add(new Command\UpdateCommand());
 $application->run();
