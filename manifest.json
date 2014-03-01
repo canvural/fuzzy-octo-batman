@@ -13,8 +13,8 @@
     },
     {
         "name": "instagramtakipci.phar",
-        "publicKey": "http://kobayakawa.github.io/fuzzy-octo-batman/pubkeys/instagramtakipci-0.1.3.phar.pubkey",
-        "sha1": "SHA1(../instagramtakipci.phar)= 2f688a6666d3187b92f16c633ff7bc132b280553",
+        "publicKey": "http://kobayakawa.github.io/fuzzy-octo-batman/pubkeys/instagramtakipci-0.1.3.phar.pubkeys",
+        "sha1": "2f688a6666d3187b92f16c633ff7bc132b280553",
         "url": "http://kobayakawa.github.io/fuzzy-octo-batman/downloads/instagramtakipci-0.1.3.phar",
         "version": "0.1.3"
     }
