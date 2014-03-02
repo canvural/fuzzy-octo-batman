@@ -32,6 +32,9 @@ class UpdateCommand extends Command
         } catch (FileException $e) {
             $output->writeln('<error>Unable to search for updates</error>');
 
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            echo $e->getTraceAsString();
+
             return 1;
         }
 

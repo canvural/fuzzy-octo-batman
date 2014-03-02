@@ -25,7 +25,7 @@ git checkout gh-pages
 cp ../instagramtakipci.phar downloads/instagramtakipci-${TAG}.phar
 git add downloads/instagramtakipci-${TAG}.phar
 
-SHA1=$(openssl sha1 ../instagramtakipci.phar)
+SHA1=$(openssl sha1 ../instagramtakipci.phar | sed 's/^.* //')
 
 JSON='name:"instagramtakipci.phar"'
 JSON="${JSON},sha1:\"${SHA1}\""
@@ -35,7 +35,7 @@ JSON="${JSON},version:\"${TAG}\""
 if [ -f ../instagramtakipci.phar.pubkey ]; then
     cp ../instagramtakipci.phar.pubkey pubkeys/instagramtakipci-${TAG}.phar.pubkeys
     git add pubkeys/instagramtakipci-${TAG}.phar.pubkeys
-    JSON="${JSON},publicKey:\"http://kobayakawa.github.io/fuzzy-octo-batman/pubkeys/instagramtakipci-${TAG}.phar.pubkey\""
+    JSON="${JSON},publicKey:\"http://kobayakawa.github.io/fuzzy-octo-batman/pubkeys/instagramtakipci-${TAG}.phar.pubkeys\""
 fi
 
 #
