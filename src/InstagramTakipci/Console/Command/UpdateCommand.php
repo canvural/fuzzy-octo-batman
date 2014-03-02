@@ -1,6 +1,6 @@
 <?php
 
-namespace InstagramTakipci\Command;
+namespace InstagramTakipci\Console\Command;
 
 use Herrera\Phar\Update\Manager;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,22 +18,19 @@ class UpdateCommand extends Command
     {
         $this
             ->setName('update')
-            ->setDescription('Updates instagramtakipci.phar to the latest version')
-            ->addOption('major', null, InputOption::VALUE_NONE, 'Allow major version update')
+            ->setDescription('Uygulamayı en son versiyona günceller')
+            ->addOption('major', null, InputOption::VALUE_NONE, 'Büyük versiyon değişikliklerine izin ver')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Looking for updates...');
+        $output->writeln('Güncellemeler aranıyor...');
 
         try {
             $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
         } catch (FileException $e) {
-            $output->writeln('<error>Unable to search for updates</error>');
-
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-            echo $e->getTraceAsString();
+            $output->writeln('<error>Güncellemeleri ararken bir soun oluştu. daha sonra tekrar deneyin</error>');
 
             return 1;
         }
@@ -42,9 +39,9 @@ class UpdateCommand extends Command
         $allowMajor = $input->getOption('major');
 
         if ($manager->update($currentVersion, $allowMajor)) {
-            $output->writeln('<info>Updated to latest version</info>');
+            $output->writeln('<info>En son versiyona güncellendi</info>');
         } else {
-            $output->writeln('<comment>Already up-to-date</comment>');
+            $output->writeln('<comment>Zaten güncel</comment>');
         }
     }
 }

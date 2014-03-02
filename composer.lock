@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "708cd9bee2758a8d49b1c47a861c158d",
+    "hash": "2c8673331f0806ecd4f3b0018f0a6613",
     "packages": [
         {
             "name": "fabpot/goutte",
@@ -490,6 +490,16 @@
             "time": "2012-08-16 17:13:03"
         },
         {
+            "name": "mwhite/random-uagent",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mwhite/random-uagent",
+                "reference": "ac4c396"
+            },
+            "type": "library"
+        },
+        {
             "name": "seld/jsonlint",
             "version": "1.1.2",
             "source": {
@@ -813,6 +823,55 @@
             "time": "2014-02-11 13:52:09"
         },
         {
+            "name": "symfony/filesystem",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Filesystem",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Filesystem.git",
+                "reference": "e81f1b30eb9748c3f8e0de3a92ea210845cff0a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/e81f1b30eb9748c3f8e0de3a92ea210845cff0a9",
+                "reference": "e81f1b30eb9748c3f8e0de3a92ea210845cff0a9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Filesystem\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Filesystem Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-01-07 13:29:57"
+        },
+        {
             "name": "symfony/finder",
             "version": "v2.4.2",
             "target-dir": "Symfony/Component/Finder",
@@ -919,6 +978,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "symfony/filesystem": 20,
         "fabpot/goutte": 20
     },
     "platform": [

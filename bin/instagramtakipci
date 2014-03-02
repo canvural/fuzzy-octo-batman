@@ -8,10 +8,8 @@ require __DIR__.'/../vendor/autoload.php';
 date_default_timezone_set('Europe/Istanbul');
 set_time_limit(0);
 
-use InstagramTakipci\Command;
-use Symfony\Component\Console\Application;
+use InstagramTakipci\Console\Command;
+use InstagramTakipci\Console\Application;
 
-$application = new Application('InstagramTakipci', '@package_version@');
-$application->add(new Command\MainCommand());
-$application->add(new Command\UpdateCommand());
+$application = new Application();
 $application->run();
