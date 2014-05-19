@@ -33,9 +33,9 @@ JSON="${JSON},url:\"http://kobayakawa.github.io/fuzzy-octo-batman/downloads/inst
 JSON="${JSON},version:\"${TAG}\""
 
 if [ -f ../instagramtakipci.phar.pubkey ]; then
-    cp ../instagramtakipci.phar.pubkey pubkeys/instagramtakipci-${TAG}.phar.pubkeys
-    git add pubkeys/instagramtakipci-${TAG}.phar.pubkeys
-    JSON="${JSON},publicKey:\"http://kobayakawa.github.io/fuzzy-octo-batman/pubkeys/instagramtakipci-${TAG}.phar.pubkeys\""
+    cp ../instagramtakipci.phar.pubkey pubkeys/instagramtakipci-${TAG}.phar.pubkey
+    git add pubkeys/instagramtakipci-${TAG}.phar.pubkey
+    JSON="${JSON},publicKey:\"http://kobayakawa.github.io/fuzzy-octo-batman/pubkeys/instagramtakipci-${TAG}.phar.pubkey\""
 fi
 
 #

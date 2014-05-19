@@ -7,64 +7,65 @@ namespace InstagramTakipci;
  */
 class Config
 {
-	/**
-	 * IG username
-	 *
-	 * @var string
-	 */
-	protected $username;
 
-	/**
-	 * IG password
-	 *
-	 * @var string
-	 */
-	protected $password;
+    /**
+     * IG username
+     *
+     * @var string
+     */
+    protected $username;
 
-	/**
-	 * Array containing hashtags for liking pictures.
-	 *
-	 * @var array
-	 */
-	protected $hashTags;
+    /**
+     * IG password
+     *
+     * @var string
+     */
+    protected $password;
 
-	/**
-	 * Array containing comments to write to pictures.
-	 *
-	 * @var array
-	 */
-	protected $comments;
+    /**
+     * Array containing hashtags for liking pictures.
+     *
+     * @var array
+     */
+    protected $hashTags;
 
-	/**
-	 * Low limit for random sleep time.
-	 *
-	 * @var int
-	 */
-	protected $sleepLowLimit;
+    /**
+     * Array containing comments to write to pictures.
+     *
+     * @var array
+     */
+    protected $comments;
 
-	/**
-	 * Low limit for random sleep time.
-	 *
-	 * @var int
-	 */
-	protected $sleepHighLimit;
+    /**
+     * Low limit for random sleep time.
+     *
+     * @var int
+     */
+    protected $sleepLowLimit;
 
-	public function __construct(
-		$username, $password, $hashTags, $comments, $sleepLowLimit, $sleepHighLimit
-	) {
-		$this->username 	  = $username;
-		$this->password 	  = $password;
-		$this->hashTags 	  = $hashTags;
-		$this->comments 	  = $comments;
-		$this->sleepLowLimit  = $sleepLowLimit;
-		$this->sleepHighLimit = $sleepHighLimit;
-	}
+    /**
+     * Low limit for random sleep time.
+     *
+     * @var int
+     */
+    protected $sleepHighLimit;
 
-	public static function create(
-		$username, $password,
-		$hashTags = array(), $comments = array(),
-		$sleepLowLimit = 5, $sleepHighLimit = 30
-	) {
+    public function __construct(
+    $username, $password, $hashTags, $comments, $sleepLowLimit, $sleepHighLimit
+    )
+    {
+        $this->username = $username;
+        $this->password = $password;
+        $this->hashTags = $hashTags;
+        $this->comments = $comments;
+        $this->sleepLowLimit = $sleepLowLimit;
+        $this->sleepHighLimit = $sleepHighLimit;
+    }
+
+    public static function create(
+    $username, $password, $hashTags = array(), $comments = array(), $sleepLowLimit = 5, $sleepHighLimit = 30
+    )
+    {
         return new static($username, $password, $hashTags, $comments, $sleepLowLimit, $sleepHighLimit);
     }
 
@@ -211,4 +212,5 @@ class Config
 
         return $this;
     }
+
 }

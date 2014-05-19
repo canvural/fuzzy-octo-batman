@@ -3,4 +3,8 @@ instagramtakipci.phar
 box.json
 private.key
 instagramtakipci.phar.pubkey
+instagramtakipci_working.phar
 /fuzzy-octo-batman
+composer.lock
+output.txt
+guzzle.log

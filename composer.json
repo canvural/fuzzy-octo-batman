@@ -18,10 +18,13 @@
     },
     "require": {
         "symfony/console": "~2.3",
-        "symfony/filesystem": "2.5.*@dev",
+        "symfony/filesystem": "~2.4",
+        "symfony/finder": "~2.4",
         "herrera-io/phar-update": "~1.0",
-        "fabpot/goutte": "1.0.*@dev",
-        "mwhite/random-uagent": "1.0.0"
+        "fabpot/goutte": "~2.0",
+        "mwhite/random-uagent": "1.0.0",
+        "monolog/monolog": "1.9.1",
+        "guzzlehttp/log-subscriber": "1.*"
     },
     "autoload": {
         "psr-0": {

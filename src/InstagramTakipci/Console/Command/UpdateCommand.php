@@ -6,7 +6,6 @@ use Herrera\Phar\Update\Manager;
 use Symfony\Component\Console\Input\InputOption;
 use Herrera\Json\Exception\FileException;
 use Herrera\Phar\Update\Manifest;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,7 +16,7 @@ class UpdateCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('update')
+            ->setName('guncelle')
             ->setDescription('Uygulamayı en son versiyona günceller')
             ->addOption('major', null, InputOption::VALUE_NONE, 'Büyük versiyon değişikliklerine izin ver')
         ;
@@ -30,7 +29,8 @@ class UpdateCommand extends Command
         try {
             $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
         } catch (FileException $e) {
-            $output->writeln('<error>Güncellemeleri ararken bir soun oluştu. daha sonra tekrar deneyin</error>');
+            // TODO: Log the exception
+            $output->writeln('<error>Güncellemeleri ararken bir soun oluştu. Daha sonra tekrar deneyin</error>');
 
             return 1;
         }
