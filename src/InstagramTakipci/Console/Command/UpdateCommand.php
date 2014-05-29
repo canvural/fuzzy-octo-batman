@@ -28,9 +28,9 @@ class UpdateCommand extends Command
 
         try {
             $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
-        } catch (FileException $e) {
+        } catch (Exception $e) {
             // TODO: Log the exception
-            $output->writeln('<error>Güncellemeleri ararken bir soun oluştu. Daha sonra tekrar deneyin</error>');
+            $output->writeln('<error>Güncellemeleri ararken bir sorun oluştu. Daha sonra tekrar deneyin</error>');
 
             return 1;
         }
