@@ -52,7 +52,7 @@ class UnfollowCommand extends Command
         $config = Config::create($username, $password);
 
         // Set up the bot
-        $bot = new Bot($output, $config);
+        $bot = new Bot($this->getIO(), $config);
         $bot->setRandomSite();
 
         // First, login to the site
@@ -67,36 +67,32 @@ class UnfollowCommand extends Command
             return FALSE;
         }
 
-        // Get the followers array
-        $request = $bot->getClient()
-            ->createRequest(
-                'GET',
-                sprintf(
-                    "https://api.instagram.com/v1/users/%d/follows?client_id=%s",
-                    $userId,
-                    $this->clientIds[array_rand($this->clientIds)]
-                )
-            );
+        $following = array();
+        $followers = array();
 
-        $response = $request->send();
-        $data = $response->json();
+        $followerUrl = sprintf(
+            "https://api.instagram.com/v1/users/%d/follows?client_id=%s",
+            $userId,
+            $this->clientIds[array_rand($this->clientIds)]
+        );
 
-        $following = $data['data'];
+        do {
+            $response = $bot->getClient()->get($followerUrl)->json();
+            $following = array_merge($following, $response['data']);
+            $followerUrl = $response['pagination']['next_url'];
+        } while($response['pagination']['next_url']);
 
-        // Get following array
-        $request = $bot->getClient()->createRequest(
-                'GET',
-                sprintf(
-                    "https://api.instagram.com/v1/users/%d/followed-by?client_id=%s",
-                    $userId,
-                    $this->clientIds[array_rand($this->clientIds)]
-                )
-            );
+        $followingUrl = sprintf(
+            "https://api.instagram.com/v1/users/%d/followed-by?client_id=%s",
+            $userId,
+             $this->clientIds[array_rand($this->clientIds)]
+        );
 
-        $response = $request->send();
-        $data = $response->json();
-
-        $followers = $data['data'];
+        do {
+            $response = $bot->getClient()->get($followingUrl)->json();
+            $followers = array_merge($followers, $response['data']);
+            $followingUrl = $response['pagination']['next_url'];
+        } while($response['pagination']['next_url']);
 
         $unfollow = array_values(array_diff(array_column($following, 'id'), array_column($followers, 'id')));
 
@@ -110,9 +106,9 @@ class UnfollowCommand extends Command
             } else {
                 // TODO: Log the request for investigating the error
                 $output->isVerbose() &&
-                    $output->writeln("<error>HATA: Bilinmeyen hata.</error>\n");
+                    $output->writeln("<error>HATA: {$jsonResponse->message} </error>\n");
             }
-            sleep(rand(5, 20));
+            sleep(rand(10, 20));
         }
     }
 

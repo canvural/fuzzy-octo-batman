@@ -12,6 +12,7 @@ use GuzzleHttp\Message\Response as GuzzleResponse;
 use Symfony\Component\Finder\Finder;
 use InstagramTakipci\IO\IOInterface;
 use InstagramTakipci\Site\SiteInterface;
+use InstagramTakipci\Exception\Exception;
 
 class Bot extends Client
 {
@@ -60,22 +61,19 @@ class Bot extends Client
 
         // Create the Guzzle and Goutte clients
         $this->setClient(new GuzzleClient(array(
-            'config' => array(
-                'curl' => array(
-                    CURLOPT_COOKIESESSION => true,
-                    CURLOPT_COOKIEJAR => getcwd() . '/cookie/cookies.txt',
-                    CURLOPT_COOKIEFILE => getcwd() . '/cookie/cookies.txt',
-                    CURLOPT_TIMEOUT => 0
-                ),
+            'defaults' => array(
+                'allow_redirects' => false, 
+                'cookies' => true,
                 'headers' => array(
                     'User-Agent' => random_uagent()
-                )
+                ),
+                'timeout' => 0
             )
         )));
 
         $this->setHeader("User-Agent", random_uagent());
 
-        $this->setupLoggers();
+        //$this->setupLoggers();
         $this->registerBuiltInSites();
     }
 
@@ -410,6 +408,10 @@ class Bot extends Client
 
     public function doALL()
     {
+        $postComment = TRUE;
+        $curr  = new \DateTime();
+        $later = new \DateTime();
+
         $data = $this->currentSite->getMediaAndUserIdsFromHashtags($this->getConfig()->getHashTags(), $this);
 
         foreach ($data AS $hashtag => $hashtagArray) {
@@ -428,6 +430,9 @@ class Bot extends Client
                             $this->io->write("<info>INFO: #$hashtag için $mediaInfo[media_id] beğenildi!</info>");
                 } elseif ($jsonResponse->status == "NG") {
                     if ($jsonResponse->message) {
+                        if(strpos($jsonResponse->message, "Oops,") != FALSE) {
+                            sleep(5);
+                        } else
                         $this->io->isVerbose() &&
                                 $this->io->write("<error>HATA: " . $jsonResponse->message . "(#$hashtag, $mediaInfo[media_id])</error>");
                     } else {
@@ -436,31 +441,49 @@ class Bot extends Client
                                 $this->io->write("<error>HATA: Bilinmeyen hata. (#$hashtag, $mediaInfo[media_id])</error>");
                     }
                 }
-                sleep(rand(3, 6));
+                sleep(rand(8, 14));
 
                 /*** COMMENT ***/
-                $jsonResponse = $this->comment($mediaInfo['media_id']);
+                if($postComment) {
+                    $jsonResponse = $this->comment($mediaInfo['media_id']);
 
-                if (!is_object($jsonResponse)) {
-                    $this->io->write("<error>HATA: (comment) Bir üstü kontrol et</error>");
-                    //exit;
-                }
-
-                if ($jsonResponse->status == "OK") {
-                    // Write info about like
-                    $this->io->isVerbose() &&
-                            $this->io->write("<info>INFO: #$hashtag için $mediaInfo[media_id] yorum yapıldı!</info>");
-                } elseif ($jsonResponse->status == "NG") {
-                    if ($jsonResponse->message) {
-                        $this->io->isVerbose() &&
-                                $this->io->write("<error>HATA: " . $jsonResponse->message . "(#$hashtag, $mediaInfo[media_id])</error>");
-                    } else {
-                        // TODO: Log the error
-                        $this->io->isVerbose() &&
-                                $this->io->write("<error>HATA: Bilinmeyen hata. (#$hashtag, $mediaInfo[media_id])</error>");
+                    if (!is_object($jsonResponse)) {
+                        $this->io->write("<error>HATA: (comment) Bir üstü kontrol et</error>");
+                        //exit;
                     }
+
+                    if ($jsonResponse->status == "OK") {
+                        // Write info about like
+                        $this->io->isVerbose() &&
+                                $this->io->write("<info>INFO: #$hashtag için $mediaInfo[media_id] yorum yapıldı!</info>");
+                    } elseif ($jsonResponse->status == "NG") {
+                        if ($jsonResponse->message) {
+                            if(strpos($jsonResponse->message, "The number of maximum requests per hour has been exceeded") !== FALSE) {
+                                $postComment = false;
+                                
+                                $minutes = $later->format('i');
+                                $seconds = $later->format('s');
+                                if($minutes > 0){
+                                    $later->modify("+1 hour");
+                                    $later->modify('-'.$minutes.' minutes');
+                                }
+                                if($seconds > 0){
+                                    $later->modify('-'.$seconds.' seconds');
+                                }
+                                $this->io->write("<error> Saatlik yorum sınırı aşıldı. Yorum atma bu saat için iptal edildi!");
+                            }
+                            $this->io->isVerbose() &&
+                                    $this->io->write("<error>HATA: " . $jsonResponse->message . "(#$hashtag, $mediaInfo[media_id])</error>");
+                        } else {
+                            // TODO: Log the error
+                            $this->io->isVerbose() &&
+                                    $this->io->write("<error>HATA: Bilinmeyen hata. (#$hashtag, $mediaInfo[media_id])</error>");
+                        }
+                    }
+                    sleep(rand(8, 16));
+                } elseif($curr > $later) {
+                    $postComment = TRUE;
                 }
-                sleep(rand(3, 6));
 
                 /*** FOLLOW ***/
                 $jsonResponse = $this->follow($mediaInfo['user_id']);

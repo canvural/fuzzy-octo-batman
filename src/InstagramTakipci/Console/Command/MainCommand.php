@@ -25,8 +25,8 @@ class MainCommand extends Command
             ->setDefinition(array(
                 new InputArgument('isim', InputArgument::REQUIRED, 'Instagram kullanıcı adı'),
                 new InputArgument('sifre', InputArgument::REQUIRED, 'Instagram şifresi (kimseyle paylaşılmaz)'),
-                new InputOption("hashtags", "ht", InputOption::VALUE_REQUIRED, "Hashtagların okunacağı dosya yolu", "src/InstagramTakipci/data/hashtags.txt"),
-                new InputOption("yorumlar", "y", InputOption::VALUE_REQUIRED, "Yorumların okunacağı dosya yolu", "src/InstagramTakipci/data/comments.txt"),
+                new InputOption("hashtags", "ht", InputOption::VALUE_REQUIRED, "Hashtagların okunacağı dosya yolu", "default"),
+                new InputOption("yorumlar", "y", InputOption::VALUE_REQUIRED, "Yorumların okunacağı dosya yolu", "default"),
                 new InputOption("low", "l", InputOption::VALUE_OPTIONAL, "Rastgele uyuma zamanının alt sınırı", 5),
                 new InputOption("high", "hg", InputOption::VALUE_OPTIONAL, "Rastgele uyuma zamanının üst sınırı", 30),
             ))
@@ -46,22 +46,16 @@ class MainCommand extends Command
 
         $filesystem = new Filesystem();
 
-        if ("src/InstagramTakipci/data/hashtags.txt" == $hashtags) {
+        if ("default" == $hashtags) {
             $output->isVerbose() &&
                 $output->writeln("<comment>Hashtag dosyası bulunamadı. Varsayılan hashtaglar yüklenecek</comment>");
+            $hashtags = __DIR__ . "/../../data/hashtags.txt";
         }
 
-        if ("src/InstagramTakipci/data/comments.txt" == $comments) {
+        if ("default" == $comments) {
             $output->isVerbose() &&
                 $output->writeln("<comment>Yorum dosyası bulunamadı. Varsayılan yorumlar yüklenecek</comment>");
-        }
-
-        if (!$filesystem->isAbsolutePath($hashtags)) {
-            $hashtags = getcwd() . DIRECTORY_SEPARATOR . $hashtags;
-        }
-
-        if (!$filesystem->isAbsolutePath($comments)) {
-            $comments = getcwd() . DIRECTORY_SEPARATOR . $comments;
+            $comments = __DIR__ . "/../../data/comments.txt";
         }
 
         $hashtags = array_map('trim', array_unique(file($hashtags)));
@@ -86,8 +80,13 @@ class MainCommand extends Command
 
         // After successfull login, this is our main loop
         while (time() <= $finishTime) {
-            $bot->doALL();
-            $output->writeln("INFO: Sleeping for 10 minutes!");
+            try {
+                $bot->doALL();
+            } catch(InstagramTakipci\Exception $e) {
+                throw $e;
+            } catch(\Exception $ee) {}
+            
+            $output->writeln("<info>INFO: Sleeping for 10 minutes!<info>");
             gc_collect_cycles();
             sleep(60 * 10);
         }
