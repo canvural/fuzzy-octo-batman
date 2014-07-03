@@ -24,5 +24,11 @@
         "sha1": "1fb24eee0b9138ae6f58ecb8514973491e3cbbf6",
         "url": "http://kobayakawa.github.io/fuzzy-octo-batman/downloads/instagramtakipci-0.4.1.phar",
         "version": "0.4.1"
+    },
+    {
+        "name": "instagramtakipci.phar",
+        "sha1": "24eb9d092797fcac24b74088e4e787e790be8ab4",
+        "url": "http://kobayakawa.github.io/fuzzy-octo-batman/downloads/instagramtakipci-0.4.2.phar",
+        "version": "0.4.2"
     }
 ]
